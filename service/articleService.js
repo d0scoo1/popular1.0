@@ -1,6 +1,7 @@
 
 const postdao = require('../dao/postDAO');
 const termdao = require('../dao/termDAO');
+const commentdao = require('../dao/commentDAO');
 
 
 module.exports = {
@@ -83,6 +84,18 @@ module.exports = {
         return results;
     },
 
+    getPageByTerm : async(term_id,page) =>{
+        return await postdao.getPageByTerm(term_id,page);
+
+    },
+
+    getTermPageNum : async(term_id,page) =>{
+         let count = await postdao.getTermPageNum (term_id);
+       
+        return count[0].post_num;
+
+    },
+
     //获取一篇文章
     getOneArticle: async (id) => {
 
@@ -111,15 +124,12 @@ module.exports = {
             }
 
         }
-
         return results;
-
     },
     //发布一篇文章
     postOneArticle: async (art) => {
         let date = new Date();
         console.log(date);
-
 
         let article = {
             post_author: art.post_author,
@@ -134,5 +144,21 @@ module.exports = {
 
         await postdao.postArticle(article);
 
+    },
+
+    postOneComment : async (comment) => {
+       
+        await commentdao.saveOneComment(comment);
+
+    },
+
+    getOnePostComments : async(post_id) =>{
+
+        return await commentdao.getOnePostComments(post_id);
+
+    },
+
+    getAllTerms : async() => {
+           return await termdao.getAllTerms();
     },
 }

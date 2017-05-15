@@ -1,53 +1,87 @@
-{% extends "base.html" %} 
+{% extends "base.html" %} {% block main %}
+<div class="content pure-u-1 pure-u-md-3-4">
 
-{% block main %}
-   <div class="content pure-u-1 pure-u-md-3-4">
+    <div class="posts">
+        <h1 class="content-subhead">
+            {% if post_pre!=null %}
+            <a href="/p/{{post_pre.post_id}}">Pre:{{post_pre.post_title}}</a>
+             {% endif %}
+        </h1>
 
-            <div class="posts">
-                <h1 class="content-subhead">
-                      {% if post_pre!=null %}
-                    <a href="/p/{{post_pre.post_id}}">Pre:{{post_pre.post_title}}</a>
-                      {% endif %}
-                    </h1>
+        <section class="post">
+            <header class="post-header">
+                <img width="48" height="48" alt="Eric Ferraiuolo&#x27;s avatar" class="post-avatar" src="/img/common/{{post.post_author_id}}.jpg">
 
-                <section class="post">
-                    <header class="post-header">
-                        <img width="48" height="48" alt="Eric Ferraiuolo&#x27;s avatar" class="post-avatar" src="/img/common/{{post.post_author_id}}.jpg">
+                <h2 class="post-title">{{post.post_title}}</h2>
 
-                        <h2 class="post-title">{{post.post_title}}</h2>
+                <p class="post-meta">
+                    {{post.user_nickname}} {% for term in terms %} {% if term.term_id ==post.post_term %}
+                    <a class="post-category " style=" background: {{term.term_color}}" href="/t/{{term.term_name}}/1">{{term.term_name}}</a> {%endif
+                    %} {% endfor %} {{post.post_f_date}} {{post.post_f_time}}
+                </p>
+            </header>
 
-                        <p class="post-meta">
-                             {{post.user_nickname}}
-                               {% for term in terms %} 
-                    {% if term.term_id ==post.post_type %}
-                    <a class="post-category " style=" background: {{term.term_color}}" href="#">{{term.term_name}}</a> 
-                    {%endif %} {% endfor %} 
-                      {{post.post_f_date}} {{post.post_f_time}}
-                        </p>
-                    </header>
+            <div class="post-description">
+                <p>
+                    {{post.post_excerpt | safe}}
+                </p>
+                <p>
+                    {{post.post_content | safe}}
+                </p>
+            </div>
+            <h1 class="content-subfoot"> {% if post_next!=null %}<a href="/p/{{post_next.post_id}}">NEXT:{{post_next.post_title}}</a> {% endif %}</h1>
 
-                    <div class="post-description">
-                        <p>
-                          {{post.post_excerpt | safe}}
-                        </p>
-                        <p>
-                            {{post.post_content | safe}}
-                        </p>
-                    </div>
-                    <h1 class="content-subfoot">   {% if post_next!=null %}<a href="/p/{{post_next.post_id}}">NEXT:{{post_next.post_title}}</a>  {% endif %}</h1>
+        </section>
 
-                </section>
-
-                <div>
+        <div>
 
 
-                    <div align="right">
-                        <button id="comment_button" class="secondary-button pure-button" onclick="comment_forms(0)">评论</button>
+            <div align="right">
+                <button id="comment_button" class="secondary-button pure-button" onclick="comment_forms(0)">评论</button>
 
-                        <div id="comment_form_0" style="display: none">
-                            <form class="pure-form pure-form-stacked" action="">
-                                <input name="comment_post_id" id="comment_post_id" type="hidden" value="comment_post_id">
-                                <input name="comment_parent" id="comment_parent" type="hidden" value="comment_parent">
+                <div id="comment_form_0" style="display: none">
+                    <form class="pure-form pure-form-stacked"  action="/p/comment" method="POST">
+                        <input name="comment_post_id" id="comment_post_id" type="hidden" value="{{post.post_id}}">
+                        <input name="comment_parent" id="comment_parent" type="hidden" value="0">
+
+                        <input name="comment_author" id="comment_author" type="text" class="pure-input-1-4 pure-input-rounded" placeholder="评论者">
+                        <input name="comment_author_email" id="comment_author_email" type="email" class="pure-input-1-4 pure-input-rounded" placeholder="邮箱">
+                        <input name="comment_author_url" id="comment_author_url" type="text" class="pure-input-1-4 pure-input-rounded" placeholder="个人主页">
+
+                        <textarea name="comment_content" id="comment_content" class="pure-input-1-4 pure-input-rounded" placeholder="评论内容"></textarea>
+
+                        <button type="submit" class="submit-button pure-button ">SUBMIT</button>
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            {% for comment in comments %}
+            
+            {% if comment.comment_parent == 0 %}
+            <div class="comment">
+
+                <div class="comment-head">
+                    <img width="48" height="48" class="comment-avatar" src="/img/common/default.png">
+
+                </div>
+                <div class="comment-visitor"> {{comment.comment_author}} {{comment.comment_date}}
+                    <br>
+                    <a href="#">{{comment.comment_author_url}}</a>
+                </div>
+
+                <div class="comment-main">
+                    {{comment.comment_content}} 
+
+                      <div align="right">
+                        <button id="comment_button_{{loop.index}}" class="secondary-button pure-button" onclick="comment_forms({{loop.index}})">评论</button>
+
+                        <div id="comment_form_{{loop.index}}" style="display: none">
+                            <form class="pure-form pure-form-stacked"  action="/p/comment" method="POST">
+                                <input name="comment_post_id" id="comment_post_id" type="hidden" value="{{post.post_id}}">
+                                <input name="comment_parent" id="comment_parent" type="hidden" value="{{comment.comment_id}}">
 
                                 <input name="comment_author" id="comment_author" type="text" class="pure-input-1-4 pure-input-rounded" placeholder="评论者">
                                 <input name="comment_author_email" id="comment_author_email" type="email" class="pure-input-1-4 pure-input-rounded" placeholder="邮箱">
@@ -62,6 +96,10 @@
 
                     </div>
 
+                    
+                    {% for comment2 in comments %} 
+                    
+                    {% if comment2.comment_parent == comment.comment_id %}
 
                     <div class="comment">
 
@@ -69,97 +107,44 @@
                             <img width="48" height="48" class="comment-avatar" src="/img/common/default.png">
 
                         </div>
-                        <div class="comment-visitor">
-                            comment_author 2016-01-01 comment_date
+                        <div class="comment-visitor"> {{comment2.comment_author}}} {{comment2.comment_date}}
                             <br>
-                            <a href="#">http://abc.net</a>
-
-
+                            <a href="#">{{comment2.comment_author_url}}</a>
                         </div>
 
                         <div class="comment-main">
-                            comment_content abc Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                            et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-                            ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-                            esse cillum dolore eu fugiat nulla pariatur.
-
-                            <div align="right">
-                                <button id="comment_button_1" class="secondary-button pure-button" onclick="comment_forms(1)">评论</button>
-
-                                <div id="comment_form_1" style="display: none">
-                                    <form class="pure-form pure-form-stacked" action="">
-                                        <input name="comment_post_id" id="comment_post_id" type="hidden" value="comment_post_id">
-                                        <input name="comment_parent" id="comment_parent" type="hidden" value="comment_parent">
-
-                                        <input name="comment_author" id="comment_author" type="text" class="pure-input-1-4 pure-input-rounded" placeholder="评论者">
-                                        <input name="comment_author_email" id="comment_author_email" type="email" class="pure-input-1-4 pure-input-rounded" placeholder="邮箱">
-                                        <input name="comment_author_url" id="comment_author_url" type="text" class="pure-input-1-4 pure-input-rounded" placeholder="个人主页">
-
-                                        <textarea name="comment_content" id="comment_content" class="pure-input-1-4 pure-input-rounded" placeholder="评论内容"></textarea>
-
-                                        <button type="submit" class="submit-button pure-button ">SUBMIT</button>
-                                    </form>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="comment">
-
-                                <div class="comment-head">
-                                    <img width="48" height="48" class="comment-avatar" src="/img/common/default.png">
-
-                                </div>
-                                <div class="comment-visitor"> Vickey 2016-01-01 </div>
-
-                                <div class="comment-main">
-                                    abc Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                    cillum dolore eu fugiat nulla pariatur.
-
-
-
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="comment">
-
-                        <div class="comment-head">
-                            <img width="48" height="48" class="comment-avatar" src="/img/common/default.png">
-
-                        </div>
-                        <div class="comment-visitor"> Vickey 2016-01-01 </div>
-
-                        <div class="comment-main">
-                            abc Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                            aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                            eu fugiat nulla pariatur.
+                            {{comment2.comment_content}}
 
                         </div>
                     </div>
+
+
+                    {% endif %} 
+                    {% endfor %}
                 </div>
             </div>
+            {% endif %}
+             {% endfor %}
+
+
+
         </div>
+    </div>
+</div>
 
-        <script type="text/javascript">
-        function comment_forms(obj) {
-            let formName = '#comment_form_' + obj;
+<script type="text/javascript">
+    function comment_forms(obj) {
+        let formName = '#comment_form_' + obj;
 
-            if ($(formName).is(':hidden')) $(formName).slideDown();
-            else $(formName).slideUp();
+        if ($(formName).is(':hidden')) $(formName).slideDown();
+        else $(formName).slideUp();
 
-        }
+    }
 
-        $(document).ready(function () {
+    $(document).ready(function () {
 
 
-        });
-    </script>
+    });
+</script>
 
 {% endblock %}

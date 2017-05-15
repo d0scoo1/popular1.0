@@ -54,14 +54,38 @@ router
     await next();
 
   })
-  .get('page/:i', async (ctx, next) => {
+//
+    .get('t/:term_id/:page', async (ctx, next) => {
+    
+        let nowTerm = ctx.params.term_id;
+        let nowPage = ctx.params.page-1;
 
+        let term_id = 0;
 
-    ctx.render('index.html', {
+        for(let i =0;i< global.const_terms.length;i++){
+          if(global.const_terms[i].term_name == nowTerm){
+            term_id = global.const_terms[i].term_id;
+          }else{
+
+          }
+        }
+    
+
+        let results = await articleservice.getPageByTerm(term_id,nowPage);
+      //  console.log(JSON.stringify(results));
+
+    //    let maxPage = await Math.ceil(articleservice.getTermPageNum (term_id) / 4);
+     //     console.log(maxPage);
+          ctx.render('page.html', {
+            title: global.const_title,
+            terms: global.const_terms,
+            posts : results,
+            term_id :term_id,
 
     });
 
   })
+
 
 
 module.exports = router;

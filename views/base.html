@@ -29,9 +29,10 @@
                 <hr style="height:1px;border:none;border-top:1px dashed #666 ">
                 <div>
                     {% for term in terms %}
+                  
 
-                     <a class="post-category " style=" background: {{term.term_color}}" href="#">{{term.term_name}}</a>
-
+                     <a class="post-category " style=" background: {{term.term_color}}" href="/t/{{term.term_name}}/1">{{term.term_name}}</a>
+                  
                     {% endfor %}
 
                  

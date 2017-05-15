@@ -17,9 +17,9 @@ var sequelize = new Sequelize(config.database, config.database_username, config.
 
 //评论表
 var pop_comments = sequelize.define('pop_comments',{
-    comments_id :{ type: Sequelize.INTEGER(11), primaryKey: true},
-    comments_post_id : Sequelize.INTEGER(11),
-    comments_author : Sequelize.TEXT('tiny'),
+    comment_id :{ type: Sequelize.INTEGER(11), primaryKey: true},
+    comment_post_id : Sequelize.INTEGER(11),
+    comment_author : Sequelize.TEXT('tiny'),
     comment_author_email : Sequelize.STRING(100),
     comment_author_url : Sequelize.STRING(100),
     comment_date : Sequelize.DATE,
@@ -65,7 +65,7 @@ var pop_posts = sequelize.define('pop_posts', {
     post_title: Sequelize.STRING(255),
     post_content :Sequelize.TEXT('long'),
     post_excerpt : Sequelize.STRING(255),
-    post_type :Sequelize.INTEGER(11),
+    post_term :Sequelize.INTEGER(11),
     post_status : Sequelize.STRING(20),
     post_order : Sequelize.INTEGER(11),
      

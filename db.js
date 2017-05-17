@@ -62,9 +62,10 @@ var pop_posts = sequelize.define('pop_posts', {
         primaryKey: true
     },
     post_author_id: Sequelize.INTEGER,
+    post_date : Sequelize.DATE,
     post_title: Sequelize.STRING(255),
     post_content :Sequelize.TEXT('long'),
-    post_excerpt : Sequelize.STRING(255),
+    post_excerpt : Sequelize.TEXT('long'),
     post_term :Sequelize.INTEGER(11),
     post_status : Sequelize.STRING(20),
     post_order : Sequelize.INTEGER(11),

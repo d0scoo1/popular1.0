@@ -2,6 +2,7 @@
 const postdao = require('../dao/postDAO');
 const termdao = require('../dao/termDAO');
 const commentdao = require('../dao/commentDAO');
+const linkdao = require('../dao/linkDAO');
 
 
 module.exports = {
@@ -9,12 +10,15 @@ module.exports = {
 //初始化
     init : async () =>{
 
-        if(typeof(global.const_terms)=='undefined'||typeof(global.const_title)=='undefined'){
+        if(typeof(global.const_terms)=='undefined'
+        ||typeof(global.const_title)=='undefined'
+        ||typeof(global.const_links)=='undefined'){
            console.log("初始化数据");
            global.const_title = 'POPULAR1.0';
            global.const_terms = await termdao.getAllTerms();
+           global.const_links = await linkdao.getAllLinks();
 
-            console.log(JSON.stringify(global.const_terms)); 
+          //  console.log(JSON.stringify(global.const_terms)); 
         }
     } ,
 
@@ -38,7 +42,12 @@ module.exports = {
             resolve(termdao.getAllTerms());
         });
 
-        await Promise.all([firstPage,terms, articleNum]).then((value) => {
+        //超链
+        let links = new Promise((resolve,reject)=>{
+            resolve(linkdao.getAllLinks());
+        });
+
+        await Promise.all([firstPage,terms, articleNum,links]).then((value) => {
             results = value;
             //     console.log(JSON.stringify(value)); 
 
@@ -83,12 +92,15 @@ module.exports = {
 
         return results;
     },
+    //获取回收站一页文章
+    
 
+//按照分类获取一页文章
     getPageByTerm : async(term_id,page) =>{
         return await postdao.getPageByTerm(term_id,page);
 
     },
-
+//获取分类文章页数
     getTermPageNum : async(term_id,page) =>{
          let count = await postdao.getTermPageNum (term_id);
        
@@ -126,25 +138,27 @@ module.exports = {
         }
         return results;
     },
+    
     //发布一篇文章
     postOneArticle: async (art) => {
         let date = new Date();
-        console.log(date);
-
+     //   console.log(date);
         let article = {
-            post_author: art.post_author,
-            post_date: date,
-            post_title: art.post_title,
-            post_content: art.post_content,
-            post_desc: art.post_desc || '',
-            post_status: 1,
-            post_type: art.post_type || 1,
+             post_author_id: art.post_author_id,
+             post_date : date,
+             post_title: art.post_title,
+             post_content :art.post_content,
+             post_excerpt : art.post_excerpt,
+             post_term : art.post_term,
+             post_status : art.post_status || 1 ,
+             post_order : art.post_order|| 0 ,
 
         }
 
         await postdao.postArticle(article);
 
     },
+
 
     postOneComment : async (comment) => {
        
@@ -160,5 +174,11 @@ module.exports = {
 
     getAllTerms : async() => {
            return await termdao.getAllTerms();
+    },
+
+    getAllLinks:async()=>{
+        
+        return await linkdao.getAllLinks();
+
     },
 }

@@ -266,6 +266,12 @@ h3 {
     background: none;
 }
 
+.footer .footer-logo{
+      border-radius: 50px;
+    margin-left: 1em;
+    filter: grayscale(1);
+}
+
 @media (min-width: 48em) {
     .content {
         padding: 2em 3em 0;

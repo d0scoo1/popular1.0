@@ -13,7 +13,7 @@
 
         <section class="post">
             <header class="post-header">
-                <img width="48" height="48" alt="Eric Ferraiuolo&#x27;s avatar" class="post-avatar" src="/img/common/{{post.post_author_id}}.jpg">
+                <img width="48" height="48" alt="Eric Ferraiuolo&#x27;s avatar" class="post-avatar" src="/img/common/{{post.post_author_id}}.png">
 
                 <h2 class="post-title" ><a href="/p/{{post.post_id}}" class="title">{{post.post_title}}</a></h2>
 
@@ -39,9 +39,12 @@
       
     </div>
 
-    <div class="post-page">
-        <a class="secondary-button pure-button" href="#">上一页</a>
-        <a class="secondary-button pure-button" href="#">下一页</a>
+ <div class="post-page">
+        {% if nowPage != 1 %}
+        <a class="secondary-button pure-button" href="/t/{{term_name}}/{{prePage}}">上一页</a> 
+        {% endif %} 
+        {% if maxPage != nowPage %}
+        <a class="secondary-button pure-button" href="/t/{{term_name}}/{{nextPage}}">下一页</a> {% endif %}
     </div>
 </div>
 

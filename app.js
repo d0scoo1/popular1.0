@@ -18,7 +18,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 const index = require('./routes/index');
 const page = require('./routes/p');
-//const users = require('./routes/users');
+const admin = require('./routes/admin');
 
 //const users = require('./routes/users');
 //const api = require('./routes/api');
@@ -36,7 +36,7 @@ app.use(convert(json()));
 // log request URL:
 app.use(async (ctx, next) => {
 
-    let pattern = /css$|js$|jpg$|png/; 
+    let pattern = /css|js|jpg|png/; 
     if(!pattern.test(ctx.request.url))
         console.log(`Process ${ctx.request.method} ${ctx.request.url}...`);
     var
@@ -65,11 +65,14 @@ app.use(staticServer(__dirname + '/public'));
 app.use(templating('views', {
     noCache: !isProduction,
     watch: !isProduction
+  
 }));
 
 router.use('/', index.routes(), index.allowedMethods());
 
 router.use('/p', page.routes(), page.allowedMethods());
+
+router.use('/admin', admin.routes(), page.allowedMethods());
 
 //router.use('/user', users.routes(), users.allowedMethods());
 //router.use('/api', api.routes(), api.allowedMethods());

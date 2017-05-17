@@ -10,9 +10,12 @@
     <link rel="stylesheet" href="/css/pure-min.css" integrity="sha384-" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/grids-responsive-min.css">
     <link rel="stylesheet" href="/css/blog.css">
-
-	<!-- jQuery -->
+	
+    <!-- 富文本编辑器 -->
+    <link rel="stylesheet" type="text/css" href="/css/wangEditor.min.css">
+    	<!-- jQuery -->
 	<script src="/js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="/js/wangEditor.min.js"></script>
 
 
 	</head>
@@ -28,8 +31,7 @@
 
                 <hr style="height:1px;border:none;border-top:1px dashed #666 ">
                 <div>
-                    {% for term in terms %}
-                  
+                    {% for term in terms %}   
 
                      <a class="post-category " style=" background: {{term.term_color}}" href="/t/{{term.term_name}}/1">{{term.term_name}}</a>
                   
@@ -44,19 +46,34 @@
 	<!-- END left -->
 
 	  {% block main %} {% endblock %}
+
+  
+
 	
 	  </div>
 
     <div class="footer">
         <div class="pure-menu pure-menu-horizontal">
             <ul>
-                <li class="pure-menu-item"><a href="http://purecss.io/" class="pure-menu-link">About</a></li>
-                <li class="pure-menu-item"><a href="http://twitter.com/yuilibrary/" class="pure-menu-link">Twitter</a></li>
-                <li class="pure-menu-item"><a href="http://github.com/yahoo/pure/" class="pure-menu-link">GitHub</a></li>
+                {% for link in links %}
+                 <li class="pure-menu-item"> 
+                 <a href="{{link.link_url}}" class="pure-menu-link">
+                     <img width="25" height="25" class="footer-logo" src="{{link.link_image}}">
+                     {{link.link_name}}</a></li>
+
+                {% endfor %}
+              
             </ul>
         </div>
     </div>
-
-
+       
 	</body>
+
+
+
+
+
+
+
+
 </html>

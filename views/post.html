@@ -4,27 +4,23 @@
     <div class="posts">
         <h1 class="content-subhead">
             {% if post_pre!=null %}
-            <a href="/p/{{post_pre.post_id}}">Pre:{{post_pre.post_title}}</a>
-             {% endif %}
+            <a href="/p/{{post_pre.post_id}}">Pre:{{post_pre.post_title}}</a> {% endif %}
         </h1>
 
         <section class="post">
             <header class="post-header">
-                <img width="48" height="48" alt="Eric Ferraiuolo&#x27;s avatar" class="post-avatar" src="/img/common/{{post.post_author_id}}.jpg">
+                <img width="48" height="48" alt="Eric Ferraiuolo&#x27;s avatar" class="post-avatar" src="/img/common/{{post.post_author_id}}.png">
 
                 <h2 class="post-title">{{post.post_title}}</h2>
 
                 <p class="post-meta">
                     {{post.user_nickname}} {% for term in terms %} {% if term.term_id ==post.post_term %}
-                    <a class="post-category " style=" background: {{term.term_color}}" href="/t/{{term.term_name}}/1">{{term.term_name}}</a> {%endif
-                    %} {% endfor %} {{post.post_f_date}} {{post.post_f_time}}
+                    <a class="post-category " style=" background: {{term.term_color}}" href="/t/{{term.term_name}}/1">{{term.term_name}}</a>                    {%endif %} {% endfor %} {{post.post_f_date}} {{post.post_f_time}}
                 </p>
             </header>
 
             <div class="post-description">
-                <p>
-                    {{post.post_excerpt | safe}}
-                </p>
+
                 <p>
                     {{post.post_content | safe}}
                 </p>
@@ -40,15 +36,15 @@
                 <button id="comment_button" class="secondary-button pure-button" onclick="comment_forms(0)">评论</button>
 
                 <div id="comment_form_0" style="display: none">
-                    <form class="pure-form pure-form-stacked"  action="/p/comment" method="POST">
+                    <form class="pure-form pure-form-stacked" action="/p/comment" method="POST">
                         <input name="comment_post_id" id="comment_post_id" type="hidden" value="{{post.post_id}}">
                         <input name="comment_parent" id="comment_parent" type="hidden" value="0">
 
-                        <input name="comment_author" id="comment_author" type="text" class="pure-input-1-4 pure-input-rounded" placeholder="评论者">
-                        <input name="comment_author_email" id="comment_author_email" type="email" class="pure-input-1-4 pure-input-rounded" placeholder="邮箱">
-                        <input name="comment_author_url" id="comment_author_url" type="text" class="pure-input-1-4 pure-input-rounded" placeholder="个人主页">
+                        <input name="comment_author" id="comment_author" type="text" class="pure-input-1-4" placeholder="评论者">
+                        <input name="comment_author_email" id="comment_author_email" type="email" class="pure-input-1-4 " placeholder="邮箱">
+                        <input name="comment_author_url" id="comment_author_url" type="text" class="pure-input-1-4" placeholder="个人主页">
 
-                        <textarea name="comment_content" id="comment_content" class="pure-input-1-4 pure-input-rounded" placeholder="评论内容"></textarea>
+                        <textarea name="comment_content" id="textarea_0" style="height:160px"></textarea>
 
                         <button type="submit" class="submit-button pure-button ">SUBMIT</button>
                     </form>
@@ -58,9 +54,7 @@
             </div>
 
 
-            {% for comment in comments %}
-            
-            {% if comment.comment_parent == 0 %}
+            {% for comment in comments %} {% if comment.comment_parent == 0 %}
             <div class="comment">
 
                 <div class="comment-head">
@@ -73,13 +67,13 @@
                 </div>
 
                 <div class="comment-main">
-                    {{comment.comment_content}} 
+                    {{comment.comment_content |safe}}
 
-                      <div align="right">
+                    <div align="right">
                         <button id="comment_button_{{loop.index}}" class="secondary-button pure-button" onclick="comment_forms({{loop.index}})">评论</button>
 
                         <div id="comment_form_{{loop.index}}" style="display: none">
-                            <form class="pure-form pure-form-stacked"  action="/p/comment" method="POST">
+                            <form class="pure-form pure-form-stacked" action="/p/comment" method="POST">
                                 <input name="comment_post_id" id="comment_post_id" type="hidden" value="{{post.post_id}}">
                                 <input name="comment_parent" id="comment_parent" type="hidden" value="{{comment.comment_id}}">
 
@@ -96,10 +90,8 @@
 
                     </div>
 
-                    
-                    {% for comment2 in comments %} 
-                    
-                    {% if comment2.comment_parent == comment.comment_id %}
+
+                    {% for comment2 in comments %} {% if comment2.comment_parent == comment.comment_id %}
 
                     <div class="comment">
 
@@ -113,19 +105,16 @@
                         </div>
 
                         <div class="comment-main">
-                            {{comment2.comment_content}}
+                            {{comment2.comment_content | safe}}
 
                         </div>
                     </div>
 
 
-                    {% endif %} 
-                    {% endfor %}
+                    {% endif %} {% endfor %}
                 </div>
             </div>
-            {% endif %}
-             {% endfor %}
-
+            {% endif %} {% endfor %}
 
 
         </div>
@@ -142,9 +131,12 @@
     }
 
     $(document).ready(function () {
-
-
+   
+            var editor = new wangEditor('textarea_0');
+            editor.create();
+                      
     });
+
 </script>
 
 {% endblock %}

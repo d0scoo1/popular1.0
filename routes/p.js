@@ -17,14 +17,16 @@ router
 
 
       ctx.render('post.html', {
+        terms: global.const_terms,
+        title: global.const_title,
+        links: global.const_links,
 
         post_title: results.post.post_title,
         post: results.post,
         post_pre: results.post_pre,
         post_next: results.post_next,
         comments: comments,
-        terms: global.const_terms,
-        title: global.const_title,
+       
 
       });
     } else {
@@ -47,7 +49,7 @@ router
       comment.parent = ctx.request.body.comment_parent || '';
       comment.approved = '1';
  
-      console.log(comment);
+    //  console.log(comment);
 
       await articleservice.postOneComment(comment);
 
@@ -60,14 +62,15 @@ router
 
 
       ctx.render('post.html', {
+        terms: global.const_terms,
+        title: global.const_title,
+        links: global.const_links,
 
         post_title: results.post.post_title,
         post: results.post,
         post_pre: results.post_pre,
         post_next: results.post_next,
         comments: comments,
-        terms: global.const_terms,
-        title: global.const_title,
 
       });
     } else {

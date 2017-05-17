@@ -30,19 +30,22 @@ router
     global.const_terms = results[1];
     let temp_articleNum = results[2];
     let maxPage = Math.ceil(temp_articleNum[0].post_num / 4);
+    global.const_links = results[3];
     
     console.log("数据已经刷新！");
 
-
-    let nowPage = 1;
-
+    let nowPage = 1;    
 
     ctx.render('index.html', {
       title: global.const_title,
       terms: global.const_terms,
+      links: global.const_links,
+      posts: posts,
+      
       nowPage: 1,
       maxPage: maxPage,
-      posts: posts,
+      nextPage: nowPage + 1,
+      prePage: nowPage - 1,
      
 
     });
@@ -58,7 +61,7 @@ router
     .get('t/:term_id/:page', async (ctx, next) => {
     
         let nowTerm = ctx.params.term_id;
-        let nowPage = ctx.params.page-1;
+        let nowPage = ctx.params.page;
 
         let term_id = 0;
 
@@ -71,21 +74,48 @@ router
         }
     
 
-        let results = await articleservice.getPageByTerm(term_id,nowPage);
+        let results = await articleservice.getPageByTerm(term_id,nowPage-1);
       //  console.log(JSON.stringify(results));
 
-    //    let maxPage = await Math.ceil(articleservice.getTermPageNum (term_id) / 4);
-     //     console.log(maxPage);
+        let maxPage = Math.ceil((await articleservice.getTermPageNum (term_id)) / 4);
+         
           ctx.render('page.html', {
             title: global.const_title,
             terms: global.const_terms,
+            links: global.const_links,
+
             posts : results,
             term_id :term_id,
+            term_name :nowTerm,
+
+            nowPage: nowPage,
+            maxPage: maxPage,
+            nextPage: nowPage + 1,
+            prePage: nowPage - 1,
 
     });
 
   })
+  .get('page/:i', async (ctx, next) => {
+       let nowPage = ctx.params.i;
+       
+    let maxPage = Math.ceil((await articleservice.getArticleNum()) / 4);
+    let posts = await articleservice.getOnePage(nowPage-1);
 
+    ctx.render('index.html', {
+      title: global.const_title,
+      terms: global.const_terms, 
+      links: global.const_links, 
+      
+      posts: posts,
+
+      nowPage: nowPage,
+      maxPage: maxPage,
+      nextPage: nowPage + 1,
+      prePage: nowPage - 1,
+
+    });
+  })
 
 
 module.exports = router;

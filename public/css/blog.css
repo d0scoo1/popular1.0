@@ -272,7 +272,31 @@ h3 {
     filter: grayscale(1);
 }
 
+.header-login {
+    text-align: center;
+    top: auto;
+    margin: 3em auto;
+}
+
+.content-login {
+	padding: 0 10em;	
+   
+}
+
 @media (min-width: 48em) {
+.content-login {
+	
+	  padding: 0 105% 0;	
+	
+	margin-top: 55%;
+    text-align: left;
+}
+
+.header-login {
+		
+		margin: 50% 2em 0;
+        text-align: right;
+}
     .content {
         padding: 2em 3em 0;
         margin-left: 25%;

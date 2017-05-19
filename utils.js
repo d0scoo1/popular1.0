@@ -1,7 +1,7 @@
 
 
 
-var parse = function parseUser(obj) {
+let parse = function parseUser(obj) {
     if (!obj) {
         return;
     }

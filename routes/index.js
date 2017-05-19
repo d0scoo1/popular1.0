@@ -44,8 +44,8 @@ router
       
       nowPage: 1,
       maxPage: maxPage,
-      nextPage: nowPage + 1,
-      prePage: nowPage - 1,
+      nextPage:  parseInt(nowPage) + 1,
+      prePage:  parseInt(nowPage) - 1,
      
 
     });

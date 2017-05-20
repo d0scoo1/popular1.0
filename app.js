@@ -63,8 +63,8 @@ app.use(staticServer(__dirname + '/public'));
 
 // add nunjucks as view:
 app.use(templating('views', {
-    noCache: isProduction,
-    watch: isProduction
+    noCache: !isProduction,
+    watch: !isProduction
   
 }));
 

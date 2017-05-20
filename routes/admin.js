@@ -10,9 +10,15 @@ const UTILS = require('../utils');
 router
   .get('/login', async (ctx, next) => {
 
+     if (ctx.cookies.get('user_cookie')) {
+         ctx.response.redirect('/');
+    }else{
     ctx.render('login.html', {
 
     });
+    }
+
+
 
   })
   .post('/login-valid', async (ctx, next) => {
@@ -69,13 +75,7 @@ router
 
     }
   })
-  .get('/logout', async (ctx, next) => {
 
-    ctx.cookies.set('user_cookie', '');
-    console.log('user logout !');
-    ctx.response.redirect('/');
-
-  })
   .get('/', async (ctx, next) => {
 
 
@@ -217,6 +217,13 @@ router
     let post = await postservice.deleteOnePost(id);
 
     ctx.response.redirect('/admin/post-m');
+
+  })  
+  .get('/logout', async (ctx, next) => {
+
+    ctx.cookies.set('user_cookie', '');
+    console.log('user logout !');
+    ctx.response.redirect('/');
 
   })
 

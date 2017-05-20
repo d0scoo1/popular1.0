@@ -3,7 +3,7 @@ var db = require('../db');
 module.exports = {
     //获取一篇文章的评论
     getOnePostComments: async (post_id) => {
-        let sql = "SELECT * FROM pop_comments "
+        let sql = "SELECT * , date_format(comment_date,'%Y-%m-%d')as comment_f_date,date_format(comment_date,'%H:%i')as comment_f_time FROM pop_comments "
             + " WHERE comment_approved = '1' "
             + " AND comment_post_id = '" + post_id + "';";
 

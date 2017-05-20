@@ -36,7 +36,7 @@ app.use(convert(json()));
 // log request URL:
 app.use(async (ctx, next) => {
 
-    let pattern = /css|js|jpg|png/; 
+    let pattern = /css|js|jpg|png|gif/; 
     if(!pattern.test(ctx.request.url))
         console.log(`Process ${ctx.request.method} ${ctx.request.url}...`);
     var

@@ -72,7 +72,6 @@ router
 
           }
         }
-    
 
         let results = await articleservice.getPageByTerm(term_id,nowPage-1);
       //  console.log(JSON.stringify(results));
@@ -90,8 +89,8 @@ router
 
             nowPage: nowPage,
             maxPage: maxPage,
-            nextPage: nowPage + 1,
-            prePage: nowPage - 1,
+            nextPage: parseInt(nowPage) + 1,
+            prePage: parseInt(nowPage) - 1,
 
     });
 
@@ -111,8 +110,8 @@ router
 
       nowPage: nowPage,
       maxPage: maxPage,
-      nextPage: nowPage + 1,
-      prePage: nowPage - 1,
+      nextPage: parseInt(nowPage) + 1,
+      prePage: parseInt(nowPage) - 1,
 
     });
   })

@@ -15,12 +15,18 @@ router
     });
 
   })
-  .post('/', async (ctx, next) => {
+  .post('/login-valid', async (ctx, next) => {
+
+    let msg = '账号密码错误';
 
     let user_login = ctx.request.body.user_login;
     let user_pwd = ctx.request.body.user_pwd;
+
+    if (user_login == '' || user_pwd == '')
+      msg = '请输入账号密码';
+
     let user = await userservice.loginValid(user_login, user_pwd);
-   
+
     if (user) {
 
       //设置cookie
@@ -38,7 +44,7 @@ router
     } else {
 
       ctx.render('login.html', {
-        msg : '账号或密码错误'
+        msg: msg,
 
       });
 
@@ -53,7 +59,7 @@ router
     //这里用户是否登陆验证
     if (ctx.cookies.get('user_cookie')) {
       ctx.state.user = UTILS.parse(ctx.cookies.get('user_cookie'));
-      console.log(`user_cookie value: ` + ctx.state.user.user_login);
+      //  console.log(`user_cookie value: ` + ctx.state.user.user_login);
       await next();
     } else {
 
@@ -67,13 +73,20 @@ router
 
     ctx.cookies.set('user_cookie', '');
     console.log('user logout !');
-    ctx.render('login.html', {
+    ctx.response.redirect('/');
+
+  })
+  .get('/', async (ctx, next) => {
+
+
+    ctx.render('admin-bg.html', {
+      title: global.const_title,
+      terms: global.const_terms,
+      user: ctx.state.user,
 
     });
 
   })
-
-
 
   .get('/post-new', async (ctx, next) => {
 
@@ -87,27 +100,40 @@ router
 
 
   })
-
   .post('/post-new-publish', async (ctx, next) => {
 
-    let art = {};
-    art.post_author_id = ctx.request.body.post_author_id;
-    art.post_title = ctx.request.body.post_title;
-    art.post_content = ctx.request.body.post_content;
-    art.post_excerpt = ctx.request.body.post_excerpt;
-    art.post_term = ctx.request.body.post_term;
+    let post = {};
+    post.post_author_id = ctx.request.body.post_author_id;
+    post.post_title = ctx.request.body.post_title;
+    post.post_content = ctx.request.body.post_content;
+    post.post_excerpt = ctx.request.body.post_excerpt;
+    post.post_term = ctx.request.body.post_term;
+
+
+    let msg = '文章已发布';
 
     if (ctx.request.body.post_status == 'on') {
-      art.post_status = 0;
+      post.post_status = 0;
+      msg = '已存草稿,' + new Date();
+    } else {
+      post.post_status = 1;
     }
     if (ctx.request.body.post_order == 'on') {
-      art.post_order = -1;
+      post.post_order = -1;
+    } else {
+      post.post_status = 0;
     }
 
-    console.log(art);
+    // console.log(post);
 
-    await articleservice.postOneArticle(art);
+    let result = await postservice.insertOnePost(post);
+    if (result) {
+      ctx.response.redirect('/admin/post-edit/' + result);
+    } else {
 
+    }
+
+    // 
 
   })
   .get('/post-m', async (ctx, next) => {
@@ -130,25 +156,69 @@ router
       //   maxPage: maxPage,
 
     });
-
   })
-  .get('/post-edit', async (ctx, next) => {
+  .get('/post-edit/:id', async (ctx, next) => {
 
+    let id = ctx.params.id;
+    let post = await postservice.getOnePost(id);
+
+    //   console.log(post);
 
     ctx.render('post-edit.html', {
       title: global.const_title,
       terms: global.const_terms,
 
-      posts: posts,
-      bin: bin,
-
-      //   nowPage: 1,
-      //   maxPage: maxPage,
+      post: post,
 
     });
+  })
+  .post('/ajax/post-update', async (ctx, next) => {
+
+    let post = {};
+    post.post_id = ctx.request.body.post_id;
+    post.post_title = ctx.request.body.post_title;
+    post.post_content = ctx.request.body.post_content;
+    post.post_excerpt = ctx.request.body.post_excerpt;
+    post.post_term = ctx.request.body.post_term;
+
+    console.log(ctx.request.body.post_status);
+    console.log(ctx.request.body.post_order);
+
+    if (ctx.request.body.post_status == 'true') {
+      post.post_status = 0;
+    } else {
+      post.post_status = 1;
+    }
+    if (ctx.request.body.post_order == 'true') {
+      post.post_order = -1;
+    } else {
+      post.post_order = 0;
+    }
+
+    await postservice.updateOnePost(post);
+
+    ctx.response.type = 'application/json';
+
+    ctx.response.body = {
+      "msg": '文章已更新'
+    };
+  })
+  .get('/post-bin/:id', async (ctx, next) => {
+
+    let id = ctx.params.id;
+    let post = await postservice.binOnePost(id);
+
+    ctx.response.redirect('/admin/post-m');
 
   })
+  .get('/post-del/:id', async (ctx, next) => {
 
+    let id = ctx.params.id;
+    let post = await postservice.deleteOnePost(id);
+
+    ctx.response.redirect('/admin/post-m');
+
+  })
 
 
 module.exports = router;

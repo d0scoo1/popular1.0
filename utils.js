@@ -1,6 +1,4 @@
 
-
-
 let parse = function parseUser(obj) {
     if (!obj) {
         return;
@@ -24,7 +22,21 @@ let parse = function parseUser(obj) {
     }
 }
 
+//获取当前格式化时间 
+let  formatDateTime = function (date) {
+    var y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    m = m < 10 ? ('0' + m) : m;
+    var d = date.getDate();
+    d = d < 10 ? ('0' + d) : d;
+    var h = date.getHours();
+    var minute = date.getMinutes();
+    minute = minute < 10 ? ('0' + minute) : minute;
+    return y + '-' + m + '-' + d+' '+h+':'+minute;
+}
+
 
 module .exports = {
-    parse
+    parse,
+    formatDateTime
 };

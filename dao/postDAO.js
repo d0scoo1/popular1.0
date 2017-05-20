@@ -27,8 +27,8 @@ getArticleNum : async()=>{
 //获取一页文章
 getArticlesByPage : async(page)=>{
    
-    let i = page*10;
-    let ii = i+10;
+    let i = page*4;
+    let ii = i+4;
 
     let sql =  "SELECT p.* ,u.user_nickname , date_format(post_date,'%Y-%m-%d')as post_f_date,date_format(post_date,'%H:%i')as post_f_time "
               + " FROM pop_posts as p,pop_users as u "
@@ -142,7 +142,7 @@ getTermPageNum :  async(term_id)=>{
 //发布文章
 postArticle : async(art)=>{
 
-   await db.pop_posts.create({
+   return await db.pop_posts.create({
  
            post_author_id: art.post_author_id,
              post_date : art.post_date,

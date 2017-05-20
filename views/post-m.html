@@ -41,8 +41,8 @@
                     <td>是</td>
                     {% endif %}
 
-                    <td>编辑</td>
-                    <td>回收站</td>
+                    <td> <a href="/admin/post-edit/{{post.post_id}}"> <button id='update' class="pure-button pure-button-primary">编辑</button></a></td>
+                    <td><a href="/admin/post-bin/{{post.post_id}}"> <button id='update' class="pure-button pure-button-default">回收站</button></a></td>
                 </tr>
                 {% endfor %}
 
@@ -83,8 +83,8 @@
                     <td>{{ term.term_name }}</td>
                     {%endif %} {% endfor %}
 
-                    <td>编辑</td>
-                    <td>回收站</td>
+                    <td> <a href="/admin/post-edit/{{post.post_id}}"> <button id='update' class="pure-button pure-button-primary">编辑</button></a></td>
+                      <td> <a href="/admin/post-del/{{post.post_id}}"> <button id='update' class="pure-button pure-button-primary">删除</button></a></td>
                 </tr>
 
                 {% endfor %}

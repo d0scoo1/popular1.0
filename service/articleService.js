@@ -155,7 +155,8 @@ module.exports = {
 
         }
 
-        await postdao.postArticle(article);
+        let pp = await postdao.postArticle(article);
+        console.log(JSON.stringify(pp));
 
     },
 

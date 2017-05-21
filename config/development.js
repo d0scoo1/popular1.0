@@ -7,9 +7,9 @@ module.exports = {
     port: 3000,         //服务端口号
 
     database: 'popular',    //数据库地址
-    database_username:'root',
-    database_password:'123456',
-  //  database_host: 'ali.vickey.me', // 主机名
+    database_username:' ',
+    database_password:' ',
+  //database_host: 'ali.vickey.me', // 主机名
     database_host: 'localhost', // 主机名
     database_port: 3306, // 端口号，MySQL默认3306
 

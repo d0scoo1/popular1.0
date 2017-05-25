@@ -13,14 +13,14 @@
 
         <section class="post">
             <header class="post-header">
-                <img width="48" height="48" alt="Eric Ferraiuolo&#x27;s avatar" class="post-avatar" src="/img/common/{{post.post_author_id}}.png">
+                <img width="48" height="48" alt="Eric Ferraiuolo&#x27;s avatar" class="post-avatar" src="/img/common/{{post.post_user_id}}.png">
 
                 <h2 class="post-title" ><a href="/p/{{post.post_id}}" class="title">{{post.post_title}}</a></h2>
 
                 <p class="post-meta">
                     {{post.user_nickname}} 
                     {% for term in terms %} 
-                    {% if term.term_id ==post.post_term %}
+                    {% if term.term_id ==post.post_term_id %}
                     <a class="post-category " style=" background: {{term.term_color}}" href="/t/{{term.term_name}}/1">{{term.term_name}}</a> 
                     {%endif %} {% endfor %} 
                     {{post.post_f_date}}

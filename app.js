@@ -14,7 +14,7 @@ const json = require('koa-json');
 const bodyparser = require('koa-bodyparser')();
 const templating = require('./templating');
 
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = true ; //开发环境为false，生产环境为true;
 
 const index = require('./routes/index');
 const page = require('./routes/p');
@@ -60,6 +60,7 @@ app.use(async (ctx, next) => {
 //加载静态文件
 app.use(staticServer(__dirname + '/public'));
 
+console.log(!isProduction);
 
 // add nunjucks as view:
 app.use(templating('views', {

@@ -29,7 +29,7 @@
                     <td>{{ post.post_title }}</td>
                     <td>{{ post.post_f_date }}</td>
                     <td>{{ post.post_f_time}}</td>
-                    {% for term in terms %} {% if term.term_id ==post.post_term %}
+                    {% for term in terms %} {% if term.term_id ==post.post_term_id %}
                     <td>{{ term.term_name }}</td>
                     {%endif %} {% endfor %} {% if post.post_status == 1 %}
                     <td>已发布</td>
@@ -79,7 +79,7 @@
                     <td>{{ post.post_title }}</td>
                     <td>{{ post.post_f_date }}</td>
                     <td>{{ post.post_f_time}}</td>
-                    {% for term in terms %} {% if term.term_id ==post.post_term %}
+                    {% for term in terms %} {% if term.term_id ==post.post_term_id %}
                     <td>{{ term.term_name }}</td>
                     {%endif %} {% endfor %}
 

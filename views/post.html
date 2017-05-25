@@ -9,12 +9,12 @@
 
         <section class="post">
             <header class="post-header">
-                <img width="48" height="48" alt="Eric Ferraiuolo&#x27;s avatar" class="post-avatar" src="/img/common/{{post.post_author_id}}.png">
+                <img width="48" height="48" alt="Eric Ferraiuolo&#x27;s avatar" class="post-avatar" src="/img/common/{{post.post_user_id}}.png">
 
                 <h2 class="post-title">{{post.post_title}}</h2>
 
                 <p class="post-meta">
-                    {{post.user_nickname}} {% for term in terms %} {% if term.term_id ==post.post_term %}
+                    {{post.user_nickname}} {% for term in terms %} {% if term.term_id ==post.post_term_id %}
                     <a class="post-category " style=" background: {{term.term_color}}" href="/t/{{term.term_name}}/1">{{term.term_name}}</a>                    {%endif %} {% endfor %} {{post.post_f_date}} {{post.post_f_time}}
                 </p>
             </header>
@@ -99,7 +99,7 @@
                             <img width="48" height="48" class="comment-avatar" src="/img/common/default.png">
 
                         </div>
-                        <div class="comment-visitor"> {{comment2.comment_author}}}  {{comment2.comment_f_date}} {{comment2.comment_f_time}}
+                        <div class="comment-visitor"> {{comment2.comment_author}}} {{comment2.comment_f_date}} {{comment2.comment_f_time}}
                             <br>
                             <a href="{{comment2.comment_author_url}}">{{comment2.comment_author_url}}</a>
                         </div>

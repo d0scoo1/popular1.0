@@ -21,7 +21,7 @@ module.exports = {
 
         let sql = "SELECT p.* ,u.user_nickname , date_format(post_date,'%Y-%m-%d')as post_f_date,date_format(post_date,'%H:%i')as post_f_time "
             + " FROM pop_posts as p,pop_users as u "
-            + " WHERE p.post_author_id = u.user_id"
+            + " WHERE p.post_user_id = u.user_id"
             + " AND p.post_status  " + status
             + " order by  post_status ASC,post_date DESC  limit " + i + ", " + ii;
 
@@ -58,8 +58,8 @@ module.exports = {
         let sql = "SELECT * ,date_format(post_date,'%Y-%m-%d')as post_f_date,date_format(post_date,'%H:%i')as post_f_time "
             + " FROM pop_posts as p,pop_users as u ,pop_terms as t "
             + " WHERE p.post_id = '" + id + "'"
-            + " AND p.post_author_id = u.user_id"
-            + " AND p.post_term = t.term_id ";
+            + " AND p.post_user_id = u.user_id"
+            + " AND p.post_term_id = t.term_id ";
         let result = await db.sequelize.query(sql, { type: db.sequelize.QueryTypes.SELECT });
 
         if (result.length > 0) {
@@ -81,12 +81,12 @@ module.exports = {
 
         await db.pop_posts.create({
 
-            post_author_id: post.post_author_id,
+            post_user_id: post.post_user_id,
             post_date: new Date(),
             post_title: post.post_title,
             post_content: post.post_content,
             post_excerpt: post.post_excerpt,
-            post_term: post.post_term,
+            post_term_id: post.post_term_id,
             post_status: post.post_status ,
             post_order: post.post_order ,
         });
@@ -115,7 +115,7 @@ module.exports = {
         let sql = "UPDATE pop_posts "
             + " SET post_date='"+date+"' ,post_title = '"+post.post_title 
             +"' , post_content='"+post.post_content+"', post_excerpt='"+ post.post_excerpt
-            +"',post_term='"+post.post_term+"',post_status='"+post.post_status +"',post_order= "+ post.post_order
+            +"',post_term_id='"+post.post_term_id+"',post_status='"+post.post_status +"',post_order= "+ post.post_order
             +" WHERE post_id =  '"+post.post_id+"'";
         
         await db.sequelize.query(sql, { type: db.sequelize.QueryTypes.UPDATE });
@@ -140,7 +140,7 @@ module.exports = {
       
     },
 
-        /**
+   /**
      * 将文章放入回收站
      * @method deleteOnePost
      * 
@@ -158,6 +158,18 @@ module.exports = {
         
         await db.sequelize.query(sql, { type: db.sequelize.QueryTypes.DELETE });
       
+    },
+   
+   /**
+     * 获取评论
+     * @method getOnePostComments
+     * 
+     * @param {} post
+     * 
+     * @return void
+     */
+    getOnePostComments : async (post_id) => {
+
     },
 
 

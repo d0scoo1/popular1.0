@@ -144,12 +144,12 @@ module.exports = {
         let date = new Date();
      //   console.log(date);
         let article = {
-             post_author_id: art.post_author_id,
+             post_user_id: art.post_user_id,
              post_date : date,
              post_title: art.post_title,
              post_content :art.post_content,
              post_excerpt : art.post_excerpt,
-             post_term : art.post_term,
+             post_term_id : art.post_term_id,
              post_status : art.post_status || 1 ,
              post_order : art.post_order|| 0 ,
 

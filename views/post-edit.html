@@ -23,16 +23,16 @@
                 <div class="pure-u-1 pure-u-md-1-12">
                 </div>
                 <div class="pure-u-1 pure-u-md-1-4">
-                    <label for="post_term">文章分类</label>
-                    <select id="post_term" name="post_term" class="pure-input-1-2">
+                    <label for="post_term_id">文章分类</label>
+                    <select id="post_term_id" name="post_term_id" class="pure-input-1-2">
                    {% for term in terms %}
-                   {% if term.term_id == post.post_term %}
+                   {% if term.term_id == post.post_term_id %}
                     <option value={{term.term_id}}  >{{ term.term_name}}</option>
                      {% endif %}
                     {% endfor %}
 
                      {% for term in terms %}
-                   {% if term.term_id != post.post_term %}
+                   {% if term.term_id != post.post_term_id %}
                     <option value={{term.term_id}}  >{{ term.term_name}}</option>    
                      {% endif %}
                     {% endfor %}
@@ -102,7 +102,7 @@
                 post_title: $("#post_title").val(),
                 post_excerpt: $("#textarea_post_excerpt").val(),
                 post_content: $("#textarea_post_content").val(),
-                post_term: $("#post_term").val(),
+                post_term_id: $("#post_term_id").val(),
                 post_status: status,
                 post_order: order
             },

@@ -38,7 +38,7 @@ var pop_links = sequelize.define('pop_links',{
     link_image :  Sequelize.STRING(255),
     link_description :  Sequelize.STRING(255),
     link_visible : Sequelize.TEXT('tiny'),
-    link_owner :  Sequelize.INTEGER(11),
+    link_user_id :  Sequelize.INTEGER(11),
     link_rating :  Sequelize.INTEGER(11),
 
 }, {
@@ -61,12 +61,12 @@ var pop_posts = sequelize.define('pop_posts', {
         type: Sequelize.INTEGER(11),
         primaryKey: true
     },
-    post_author_id: Sequelize.INTEGER,
+    post_user_id: Sequelize.INTEGER,
     post_date : Sequelize.DATE,
     post_title: Sequelize.STRING(255),
     post_content :Sequelize.TEXT('long'),
     post_excerpt : Sequelize.TEXT('long'),
-    post_term :Sequelize.INTEGER(11),
+    post_term_id :Sequelize.INTEGER(11),
     post_status : Sequelize.STRING(20),
     post_order : Sequelize.INTEGER(11),
      

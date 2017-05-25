@@ -8,8 +8,8 @@ getOneArticleById : async(id)=>{
   let sql = "SELECT * ,date_format(post_date,'%Y-%m-%d')as post_f_date,date_format(post_date,'%H:%i')as post_f_time "
 +" FROM pop_posts as p,pop_users as u ,pop_terms as t "
 +" WHERE p.post_id = '"+id+"'"
-+" AND p.post_author_id = u.user_id"
-+" AND p.post_term = t.term_id ";
++" AND p.post_user_id = u.user_id"
++" AND p.post_term_id = t.term_id ";
  let article = await db.sequelize.query(sql,{ type: db.sequelize.QueryTypes.SELECT});
  
   return article;
@@ -32,7 +32,7 @@ getArticlesByPage : async(page)=>{
 
     let sql =  "SELECT p.* ,u.user_nickname , date_format(post_date,'%Y-%m-%d')as post_f_date,date_format(post_date,'%H:%i')as post_f_time "
               + " FROM pop_posts as p,pop_users as u "
-              +" WHERE p.post_author_id = u.user_id"
+              +" WHERE p.post_user_id = u.user_id"
               +" AND p.post_status = '1' "
               +" AND p.post_order = '0' "
               +" order by post_date DESC  limit "+ i+", "+ ii  ;
@@ -49,7 +49,7 @@ getEditArticlesByPage : async(page)=>{
 
     let sql =  "SELECT p.* ,u.user_nickname , date_format(post_date,'%Y-%m-%d')as post_f_date,date_format(post_date,'%H:%i')as post_f_time "
               + " FROM pop_posts as p,pop_users as u "
-              +" WHERE p.post_author_id = u.user_id"
+              +" WHERE p.post_user_id = u.user_id"
               +" AND p.post_status = '1' or '0'  "
               +" order by post_date DESC  limit "+ i+", "+ ii  ;
     
@@ -74,7 +74,7 @@ getBinByPage : async(page)=>{
 
     let sql =  "SELECT p.* ,u.user_nickname , date_format(post_date,'%Y-%m-%d')as post_f_date,date_format(post_date,'%H:%i')as post_f_time "
               + " FROM pop_posts as p,pop_users as u "
-              +" WHERE p.post_author_id = u.user_id"
+              +" WHERE p.post_user_id = u.user_id"
               +" AND p.post_status = '-1' "
               +" order by post_date DESC  limit "+ i+", "+ ii  ;
     
@@ -118,9 +118,9 @@ getPageByTerm : async(term_id,page)=>{
 
     let sql =  "SELECT p.* ,u.user_nickname , date_format(post_date,'%Y-%m-%d')as post_f_date,date_format(post_date,'%H:%i')as post_f_time "
               + " FROM pop_posts as p,pop_users as u "
-              +" WHERE p.post_author_id = u.user_id"
+              +" WHERE p.post_user_id = u.user_id"
               +" AND p.post_status = '1' "
-              +" AND p.post_term = "+term_id
+              +" AND p.post_term_id = "+term_id
               +" AND p.post_order = '0' "
               +" order by post_date DESC  limit "+ i+", "+ ii  ;
     
@@ -134,7 +134,7 @@ getTermPageNum :  async(term_id)=>{
     let sql = "SELECT COUNT(*) AS post_num FROM pop_posts"
               +" WHERE post_status = '1' "
               +" AND post_order = '0' "
-              +" AND post_term = " + term_id;
+              +" AND post_term_id = " + term_id;
 
     return  await db.sequelize.query(sql,{ type: db.sequelize.QueryTypes.SELECT});
 },
@@ -144,12 +144,12 @@ postArticle : async(art)=>{
 
    return await db.pop_posts.create({
  
-           post_author_id: art.post_author_id,
+           post_user_id: art.post_user_id,
              post_date : art.post_date,
              post_title: art.post_title,
              post_content :art.post_content,
              post_excerpt : art.post_excerpt,
-             post_term : art.post_term,
+             post_term_id : art.post_term_id,
              post_status : art.post_status ,
              post_order : art.post_order ,
     });

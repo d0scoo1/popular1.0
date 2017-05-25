@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `popular` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `popular`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: ali.vickey.me    Database: popular
@@ -64,9 +62,11 @@ CREATE TABLE `pop_links` (
   `link_image` varchar(255) DEFAULT NULL,
   `link_description` varchar(255) DEFAULT NULL,
   `link_visible` tinyint(1) NOT NULL DEFAULT '1',
-  `link_owner` int(11) DEFAULT NULL,
+  `link_user_id` int(11) DEFAULT NULL,
   `link_rating` int(11) DEFAULT NULL,
-  PRIMARY KEY (`link_id`)
+  PRIMARY KEY (`link_id`),
+  KEY `link_user_idx` (`link_user_id`),
+  CONSTRAINT `link_user` FOREIGN KEY (`link_user_id`) REFERENCES `pop_users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -94,8 +94,8 @@ CREATE TABLE `pop_old_posts` (
   `post_title` varchar(100) DEFAULT NULL,
   `post_content` longtext,
   `post_excerpt` longtext,
-  PRIMARY KEY (`old_post_id`),
-  CONSTRAINT `old_post_post_id` FOREIGN KEY (`old_post_id`) REFERENCES `pop_posts` (`post_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  PRIMARY KEY (`post_id`),
+  CONSTRAINT `old_post_post_id` FOREIGN KEY (`post_id`) REFERENCES `pop_posts` (`post_id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -144,20 +144,20 @@ DROP TABLE IF EXISTS `pop_posts`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pop_posts` (
   `post_id` int(11) NOT NULL AUTO_INCREMENT,
-  `post_author_id` int(11) DEFAULT NULL,
+  `post_user_id` int(11) DEFAULT NULL,
   `post_date` datetime DEFAULT NULL,
   `post_title` varchar(100) DEFAULT NULL,
   `post_content` longtext,
   `post_excerpt` longtext,
-  `post_term` int(11) DEFAULT NULL,
+  `post_term_id` int(11) DEFAULT NULL,
   `post_status` varchar(20) NOT NULL COMMENT '1  发布\n0  草稿\n-1 回收站',
   `post_order` int(11) DEFAULT NULL,
   PRIMARY KEY (`post_id`),
-  KEY `post_user_idx` (`post_author_id`),
-  KEY `post_term_idx` (`post_term`),
-  CONSTRAINT `post_term` FOREIGN KEY (`post_term`) REFERENCES `pop_terms` (`term_id`) ON DELETE SET NULL ON UPDATE NO ACTION,
-  CONSTRAINT `post_user` FOREIGN KEY (`post_author_id`) REFERENCES `pop_users` (`user_id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+  KEY `post_user_idx` (`post_user_id`),
+  KEY `post_term_idx` (`post_term_id`),
+  CONSTRAINT `post_term` FOREIGN KEY (`post_term_id`) REFERENCES `pop_terms` (`term_id`) ON DELETE SET NULL ON UPDATE NO ACTION,
+  CONSTRAINT `post_user` FOREIGN KEY (`post_user_id`) REFERENCES `pop_users` (`user_id`) ON DELETE SET NULL ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -235,4 +235,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-21 12:58:17
+-- Dump completed on 2017-05-24 18:07:24

@@ -1,10 +1,10 @@
 var db = require('../db');
 
 module.exports = {
-    //获取一篇文章的评论
+    //获取友链
     getAllLinks: async () => {
         let sql = "SELECT * FROM pop_links"
-            + " WHERE link_owner = '1'"
+            + " WHERE link_user_id = '1'"
             + " AND link_visible = '1'"
             + " order by  link_rating"
 

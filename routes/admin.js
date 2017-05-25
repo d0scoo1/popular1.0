@@ -11,7 +11,7 @@ router
   .get('/login', async (ctx, next) => {
 
      if (ctx.cookies.get('user_cookie')) {
-         ctx.response.redirect('/');
+         ctx.response.redirect('/admin');
     }else{
     ctx.render('login.html', {
 
@@ -103,11 +103,11 @@ router
   .post('/post-new-publish', async (ctx, next) => {
 
     let post = {};
-    post.post_author_id = ctx.request.body.post_author_id;
+    post.post_user_id = ctx.request.body.post_user_id;
     post.post_title = ctx.request.body.post_title;
     post.post_content = ctx.request.body.post_content;
     post.post_excerpt = ctx.request.body.post_excerpt;
-    post.post_term = ctx.request.body.post_term;
+    post.post_term_id = ctx.request.body.post_term_id;
 
 
     let msg = '文章已发布';
@@ -179,10 +179,10 @@ router
     post.post_title = ctx.request.body.post_title;
     post.post_content = ctx.request.body.post_content;
     post.post_excerpt = ctx.request.body.post_excerpt;
-    post.post_term = ctx.request.body.post_term;
+    post.post_term_id = ctx.request.body.post_term_id;
 
-    console.log(ctx.request.body.post_status);
-    console.log(ctx.request.body.post_order);
+    //console.log(ctx.request.body.post_status);
+    //console.log(ctx.request.body.post_order);
 
     if (ctx.request.body.post_status == 'true') {
       post.post_status = 0;
